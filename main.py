@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QApplication
+from PyQt5.QtWidgets import QWidget, QApplication, QMessageBox
 import sys
 from game import *
 
@@ -12,7 +12,8 @@ class Form(QWidget):
     def paintEvent(self, e):
         qp = QPainter()
         qp.begin(self)
-        self.game.draw(qp)
+        if hasattr(self, 'game'):
+            self.game.draw(qp)
         qp.end()
 
     def keyPressEvent(self, e):
@@ -23,6 +24,15 @@ class Form(QWidget):
 
     def closeEvent(self, e):
         self.game.bRun = False
+
+    def gameOver(self):
+        result = QMessageBox.information(self, '게임 종료', '한 판 더 하시겠습니까?', QMessageBox.Yes|QMessageBox.No)
+
+        if result == QMessageBox.Yes:
+            del(self.game)
+            self.game = Game(self)
+        else:
+            self.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
