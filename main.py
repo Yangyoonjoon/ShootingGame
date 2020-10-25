@@ -7,6 +7,7 @@ QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 class Form(QWidget):
     def __init__(self):
         super().__init__()
+        self.showFullScreen()
         self.game = Game(self)
 
     def paintEvent(self, e):
@@ -18,6 +19,8 @@ class Form(QWidget):
 
     def keyPressEvent(self, e):
         self.game.keyDown(e.key())
+        if e.key() == Qt.Key_Escape:
+            self.close()
 
     def keyReleaseEvent(self, e):
         self.game.keyUp(e.key())
