@@ -3,48 +3,8 @@ from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QFont
 from threading import Thread
 import time
 import random
-from PyQt5.QtWidgets import QInputDialog
-
-# 적군 클래스
-class Enemy:
-    def __init__(self, r, d, s, c, t):
-        self.r = r
-        # 방향 0:Left, 1:Up, 2:Right, 3:Down
-        self.dir = d
-        self.size = s
-        self.die = False
-        self.col =  c
-        # 타입 0:적군, 1:hp회복, 2:모든 적군 삭제
-        self.type = t
-        self.speed = 2
-
-# 방어막 클래스
-class Shield:
-    def __init__(self, r):
-        self.r = r
-        self.die = False
-        self.life = 4
-        
-# 총알 클래스
-class Bullet:
-    def __init__(self, r, d):
-        self.r = r
-        self.die = False
-        self.dir = d
-
-# 흔적 클래스
-class Trace:
-    def __init__(self, r, x, y):
-        self.r = r
-        self.die = False
-        self.x = x
-        self.y = y
-
-# 폭탄, 폭탄 범위, 폭발 클래스
-class Bomb:
-    def __init__(self, r):
-        self.r = r
-        self.die = False
+from Enemy import Enemy
+from my_skill import *
 
 class Game(QObject):
 
@@ -223,13 +183,13 @@ class Game(QObject):
         p = QPen(QColor(0, 0, 0, 50), 1, Qt.DashDotLine)
         qp.setPen(p)
         for br in self.bombRange:
-            qp.drawEllipse(br.r)
+            qp.drawRect(br.r)
 
         # 폭발 그리기
         b = QBrush(QColor(255, 0, 0, 100))
         qp.setBrush(b)
         for e in self.explosion:
-            qp.drawEllipse(e.r)
+            qp.drawRect(e.r)
 
     def keyDown(self, key):
         if key == Qt.Key_Left or key == Qt.Key_A:
@@ -517,7 +477,7 @@ class Game(QObject):
 
                 # 적군 이동 처리 및 벽과 충돌 처리
                 # 방향 0:Left, 1:Up, 2:Right, 3:Down
-                esp = e.speed
+                esp = self.esp
                 if e.dir == 0:
                     if e.r.left() > self.rect.right():
                         e.die = True
