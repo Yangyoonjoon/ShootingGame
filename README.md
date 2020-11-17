@@ -1,4 +1,5 @@
-# PyQt5Game
+# ShootingGame
+PyQt5로 제작
 키보드 컨트롤을 통해 적군을 피하거나 공격하여 살아남는 게임
 
 ## 조작 방법
